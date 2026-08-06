@@ -1,8 +1,12 @@
 import express, { Request, Response } from "express";
+// src/index.ts
+import swaggerUi from 'swagger-ui-express';
+const swaggerDocument = require('./docs/swagger.json');
 
 const app = express();
 const PORT = 3000;
 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.json());
 
 interface User {
