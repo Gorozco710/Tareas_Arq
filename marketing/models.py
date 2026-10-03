@@ -1,6 +1,6 @@
 from core_project.models_base import BaseModel
 from django.db import models
-from inventory.models import Product
+from inventory.models import Producto
 from users.models import UserProfile
 
 
@@ -23,7 +23,7 @@ class Coupon(BaseModel):
 
 class Review(BaseModel):
   product = models.ForeignKey(
-      Product, on_delete=models.CASCADE, related_name='reviews'
+      Producto, on_delete=models.CASCADE, related_name='reviews'
   )
   user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
   rating = models.IntegerField(help_text='Calificación del 1 al 5')

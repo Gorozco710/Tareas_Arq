@@ -1,34 +1,41 @@
-from core_project.models_base import BaseModel
+import uuid
 from django.db import models
 
+class BaseModel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    eliminado = models.BooleanField(default=False)
+    fecha_eliminacion = models.DateTimeField(blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
 
-class Category(BaseModel):
-  name = models.CharField(max_length=100, unique=True)
-  slug = models.SlugField(unique=True)
-  display_order = models.IntegerField(default=0)
+    class Meta:
+        abstract = True
 
-  def __str__(self):
-    return self.name
+class Categoria(BaseModel):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True)
+    activa = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.nombre
 
-class Product(BaseModel):
-  category = models.ForeignKey(
-      Category, on_delete=models.SET_NULL, null=True, related_name='products'
-  )
-  name = models.CharField(max_length=200)
-  sku = models.CharField(max_length=50, unique=True)
-  price = models.DecimalField(max_digits=10, decimal_places=2)
-  stock_quantity = models.PositiveIntegerField(default=0)
-  weight_kg = models.FloatField(help_text='Peso en kilogramos')
-  is_available = models.BooleanField(default=True)
+class Producto(BaseModel):
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='productos')
+    nombre = models.CharField(max_length=150)
+    descripcion = models.TextField()
+    precio = models.DecimalField(decimal_places=2, max_digits=10)
+    peso = models.FloatField(default=0)
+    disponible = models.BooleanField(default=True)
+    fecha_lanzamiento = models.DateField(blank=True, null=True)
 
-  def __str__(self):
-    return self.name
+    def __str__(self):
+        return self.nombre
 
+class Inventario(BaseModel):
+    producto = models.OneToOneField(Producto, on_delete=models.CASCADE, related_name='inventario')
+    cantidad = models.PositiveIntegerField(default=0)
+    cantidad_minima = models.PositiveIntegerField(default=5)
+    ultima_entrada = models.DateTimeField(blank=True, null=True)
 
-class ProductAttribute(BaseModel):
-  product = models.ForeignKey(
-      Product, on_delete=models.CASCADE, related_name='attributes'
-  )
-  key_name = models.CharField(max_length=50)  # Ej. "Color", "Voltaje"
-  value = models.CharField(max_length=100)  # Ej. "Rojo", "120V"
+    def __str__(self):
+        return f"Inventario de {self.producto.nombre}"
