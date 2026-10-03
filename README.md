@@ -1,92 +1,47 @@
-# Core Project
+# Proyecto Django - Sistema E-Commerce & ERP (HW-03)
 
-Proyecto Django modular con las aplicaciones `users`, `inventory`, `orders`, `marketing` y `logistics`. Incluye una API REST para inventario protegida con JWT.
+Este proyecto de Django implementa una arquitectura modular dividida en 5 aplicaciones (`users`, `inventory`, `orders`, `marketing`, `logistics`), utilizando un modelo base abstracto con UUIDv4, marcas de tiempo y soporte para *Soft Delete*.
 
-## Requisitos
+## Prerrequisitos
+* Python 3.10 o superior instalado.
+* Git instalado.
 
-- Python 3.10 o superior.
+## Instrucciones de Instalación y Ejecución
 
-## Instalación y ejecución
+1. **Clonar el repositorio y cambiar a la rama de la tarea:**
+bash
+git clone https://github.com/Gorozco710/Tareas_Arq.git
+cd Tareas_Arq
+git checkout hw-03
 
-Abre una terminal en la carpeta `core_project`, donde se encuentra `manage.py`, y crea un entorno virtual:
 
-En Windows:
+2. **Crear y activar un entorno virtual:**
+* En Windows (CMD / PowerShell):
+bash
+python -m venv venv
+venv\Scripts\activate
 
-```powershell
-py -m venv venv
-```
-
-En macOS o Linux:
-
-```bash
+* En macOS / Linux:
+bash
 python3 -m venv venv
-```
-
-Activa el entorno virtual.
-
-En Windows:
-
-```powershell
-.\venv\Scripts\Activate.ps1
-```
-
-En macOS o Linux:
-
-```bash
 source venv/bin/activate
-```
 
-Instala dependencias y crea las tablas:
 
-```bash
-python -m pip install -r requirements.txt
+3. **Instalar las dependencias (Django):**
+bash
+pip install django
+
+
+4. **Navegar a la carpeta del proyecto y aplicar las migraciones:**
+bash
+cd core_project
+python manage.py makemigrations users inventory orders marketing logistics
 python manage.py migrate
-```
 
-Para crear un usuario que pueda obtener tokens JWT:
 
-```bash
-python manage.py createsuperuser
-```
-
-Inicia el servidor:
-
-```bash
+5. **Ejecutar el servidor de desarrollo:**
+bash
 python manage.py runserver
-```
 
-El administrador está en `http://127.0.0.1:8000/admin/`. La raíz `/` no tiene una página configurada.
 
-## API y JWT
-
-Solicita un par de tokens enviando las credenciales del usuario de Django:
-
-```http
-POST http://127.0.0.1:8000/api/token/
-Content-Type: application/json
-
-{"username": "usuario", "password": "contraseña"}
-```
-
-Envía el token de acceso en las solicitudes a la API:
-
-```http
-Authorization: Bearer <access>
-```
-
-Renueva el token de acceso con:
-
-```http
-POST http://127.0.0.1:8000/api/token/refresh/
-Content-Type: application/json
-
-{"refresh": "<refresh>"}
-```
-
-Endpoints protegidos disponibles:
-
-- `/api/categorias/`
-- `/api/productos/`
-- `/api/inventarios/`
-
-Por ahora, solo inventario expone endpoints REST. `orders`, `marketing`, `logistics` y `users` contienen modelos, pero no rutas API. El inicio de sesión JWT utiliza los usuarios de autenticación de Django; `UserProfile` es un modelo de perfil independiente.
+6. Abre tu navegador y accede a `http://127.0.0.1:8000/` para verificar que el servidor de Django está corriendo correctamente.
