@@ -27,7 +27,7 @@ Activa el entorno virtual.
 En Windows:
 
 ```powershell
-\.\venv\Scripts\Activate.ps1
+.\venv\Scripts\Activate.ps1
 ```
 
 En macOS o Linux:
