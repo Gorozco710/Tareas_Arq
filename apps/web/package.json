@@ -1,0 +1,18 @@
+{
+  "name": "@hw/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "start": "vite preview --host 127.0.0.1",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@hw/shared": "*"
+  },
+  "devDependencies": {
+    "vite": "^6.4.0"
+  }
+}
